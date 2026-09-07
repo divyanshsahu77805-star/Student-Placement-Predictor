@@ -1,0 +1,330 @@
+/* ==========================================================================
+   Placement Board — a Lichess-inspired dashboard for a student placement
+   prediction model. Palette and layout idioms borrowed deliberately from
+   lichess.org: dark chrome, signature moss green, gold accents on the
+   "board", and functional, low-chrome panels rather than soft SaaS cards.
+   ========================================================================== */
+
+:root {
+  /* -- Color tokens -- */
+  --bg:            #161512;   /* page background, matches lichess board wrapper */
+  --panel:         #1e1c19;   /* card / panel surface */
+  --panel-raised:  #262421;   /* slightly raised surface (inputs, nav) */
+  --border:        #33302c;
+  --border-soft:   #2a2824;
+
+  --text:          #bababa;
+  --text-dim:      #85817c;
+  --text-hi:       #f0f0e8;
+
+  --green:         #759900;   /* lichess signature green */
+  --green-light:   #a3d160;
+  --green-dark:    #4d6600;
+
+  --gold:          #e2b714;   /* puzzle-streak gold, used for the "eval" accent */
+  --red:           #c8493a;
+
+  --light-square:  #ebecd0;   /* board light square, used sparingly */
+
+  /* -- Type -- */
+  --font-body: "Noto Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "Roboto Mono", "SFMono-Regular", Consolas, monospace;
+
+  --radius: 3px;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: inherit; }
+
+h1, h2, h3 { color: var(--text-hi); margin: 0 0 0.5em; font-weight: 700; }
+h1 { font-size: clamp(2rem, 4vw, 2.9rem); line-height: 1.1; letter-spacing: -0.01em; }
+h2 { font-size: 1.6rem; letter-spacing: -0.01em; }
+h3 { font-size: 1.05rem; }
+
+p { max-width: 62ch; }
+
+.mono { font-family: var(--font-mono); }
+
+/* -- Layout helpers -- */
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+section { padding: 72px 0; border-bottom: 1px solid var(--border-soft); }
+section:last-of-type { border-bottom: none; }
+
+.eyebrow {
+  color: var(--green-light);
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* -- Top nav, styled after lichess's dark header strip -- */
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+}
+.topnav .wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 56px;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+  color: var(--text-hi);
+  text-decoration: none;
+  font-size: 1.05rem;
+}
+.brand .sq {
+  width: 18px; height: 18px;
+  background: conic-gradient(var(--light-square) 0 90deg, var(--green) 90deg 180deg, var(--light-square) 180deg 270deg, var(--green) 270deg 360deg);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+.navlinks { display: flex; gap: 28px; }
+.navlinks a {
+  text-decoration: none;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+  font-weight: 500;
+  transition: color .15s ease;
+}
+.navlinks a:hover { color: var(--text-hi); }
+
+/* -- Buttons -- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border-radius: var(--radius);
+  border: none;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background .15s ease, transform .1s ease;
+}
+.btn-primary { background: var(--green); color: #101003; }
+.btn-primary:hover { background: var(--green-light); }
+.btn-primary:active { transform: scale(0.98); }
+.btn-ghost { background: transparent; color: var(--text-hi); border: 1px solid var(--border); }
+.btn-ghost:hover { border-color: var(--text-dim); }
+
+/* ==========================================================================
+   Hero
+   ========================================================================== */
+.hero { padding-top: 64px; padding-bottom: 64px; }
+.hero .wrap { max-width: 760px; }
+.hero-copy p { color: var(--text); font-size: 1.05rem; }
+.hero-actions { display: flex; gap: 12px; margin-top: 28px; }
+
+/* ==========================================================================
+   Analysis section
+   ========================================================================== */
+.chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 36px;
+}
+.chart-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.chart-card img { width: 100%; display: block; }
+.chart-card .cap {
+  padding: 14px 18px;
+  border-top: 1px solid var(--border-soft);
+  font-size: 0.88rem;
+  color: var(--text-dim);
+}
+.chart-card.full { grid-column: 1 / -1; }
+
+/* ==========================================================================
+   Predict section
+   ========================================================================== */
+.predict-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 36px;
+  align-items: start;
+}
+
+.form-panel, .result-panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+}
+
+.field { margin-bottom: 20px; }
+.field label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  color: var(--text-hi);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.field label .val {
+  font-family: var(--font-mono);
+  color: var(--green-light);
+  font-weight: 700;
+}
+.field input[type="range"] {
+  width: 100%;
+  accent-color: var(--green);
+  height: 4px;
+  background: var(--panel-raised);
+}
+.field .hint { font-size: 0.76rem; color: var(--text-dim); margin-top: 4px; }
+
+.toggle-row {
+  display: flex;
+  gap: 10px;
+}
+.toggle-row button {
+  flex: 1;
+  padding: 10px;
+  background: var(--panel-raised);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.88rem;
+  transition: all .15s ease;
+}
+.toggle-row button.active {
+  background: var(--green);
+  border-color: var(--green);
+  color: #101003;
+}
+
+.result-panel { position: sticky; top: 76px; }
+.result-empty { color: var(--text-dim); font-size: 0.95rem; padding: 24px 0; }
+
+.result-verdict {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+.result-verdict .label {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-hi);
+}
+.result-verdict .pct {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  color: var(--green-light);
+}
+
+.result-bar {
+  height: 28px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  border: 1px solid var(--border);
+  margin: 16px 0 22px;
+}
+.result-bar .fill {
+  background: var(--green);
+  transition: width .5s cubic-bezier(.2,.8,.2,1);
+}
+.result-bar .rest { background: var(--light-square); }
+
+.driver-list { list-style: none; padding: 0; margin: 0; }
+.driver-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 9px 0;
+  border-top: 1px solid var(--border-soft);
+  font-size: 0.88rem;
+}
+.driver-list li:first-child { border-top: none; }
+.driver-list .dname { color: var(--text); }
+.driver-list .dval { font-family: var(--font-mono); color: var(--text-dim); }
+.driver-list .dval.pos { color: var(--green-light); }
+.driver-list .dval.neg { color: var(--red); }
+
+.note-box {
+  margin-top: 24px;
+  padding: 14px 16px;
+  background: var(--panel-raised);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+}
+
+/* ==========================================================================
+   About / methodology
+   ========================================================================== */
+.method-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 32px;
+}
+.method-card {
+  border-top: 2px solid var(--green);
+  padding-top: 16px;
+}
+.method-card h3 { margin-bottom: 8px; }
+.method-card p { font-size: 0.92rem; color: var(--text-dim); }
+
+footer {
+  padding: 40px 0;
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  text-align: center;
+}
+footer a { color: var(--text-dim); }
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+@media (max-width: 860px) {
+  .hero .wrap { grid-template-columns: 1fr; }
+  .chart-grid { grid-template-columns: 1fr; }
+  .predict-layout { grid-template-columns: 1fr; }
+  .result-panel { position: static; }
+  .method-grid { grid-template-columns: 1fr; }
+  .eval-stats { grid-template-columns: 1fr; }
+  .navlinks { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
+}
