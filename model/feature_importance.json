@@ -1,0 +1,57 @@
+{
+  "study_hours_per_day": {
+    "importance": 0.07289990782737732,
+    "corr_sign": 1,
+    "corr": 0.118
+  },
+  "projects_count": {
+    "importance": 0.10606184601783752,
+    "corr_sign": 1,
+    "corr": 0.196
+  },
+  "internships": {
+    "importance": 0.07521451264619827,
+    "corr_sign": 1,
+    "corr": 0.109
+  },
+  "cgpa": {
+    "importance": 0.07138290256261826,
+    "corr_sign": 1,
+    "corr": 0.129
+  },
+  "mock_interviews": {
+    "importance": 0.08827798813581467,
+    "corr_sign": 1,
+    "corr": 0.033
+  },
+  "communication_score": {
+    "importance": 0.07767654210329056,
+    "corr_sign": 1,
+    "corr": 0.155
+  },
+  "resume_score": {
+    "importance": 0.09765040874481201,
+    "corr_sign": 1,
+    "corr": 0.246
+  },
+  "hackathons_participated": {
+    "importance": 0.10909785330295563,
+    "corr_sign": 1,
+    "corr": 0.09
+  },
+  "academic_efficiency": {
+    "importance": 0.06770960241556168,
+    "corr_sign": 1,
+    "corr": 0.131
+  },
+  "practical_experience": {
+    "importance": 0.15163707733154297,
+    "corr_sign": 1,
+    "corr": 0.224
+  },
+  "dsa_overall_score": {
+    "importance": 0.08239127695560455,
+    "corr_sign": 1,
+    "corr": 0.172
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "cgpa": {
+    "min": 5.0,
+    "max": 10.0,
+    "mean": 7.286209999999999,
+    "median": 7.245
+  },
+  "study_hours_per_day": {
+    "min": 1.0,
+    "max": 10.0,
+    "mean": 4.5303,
+    "median": 4.5
+  },
+  "dsa_hours_per_week": {
+    "min": 0.0,
+    "max": 15.6,
+    "mean": 6.239599999999999,
+    "median": 6.2
+  },
+  "dsa_problems_solved": {
+    "min": 0.0,
+    "max": 189.0,
+    "mean": 70.872,
+    "median": 68.5
+  },
+  "projects_count": {
+    "min": 0.0,
+    "max": 6.0,
+    "mean": 1.963,
+    "median": 2.0
+  },
+  "internships": {
+    "min": 0.0,
+    "max": 1.0,
+    "mean": 0.41,
+    "median": 0.0
+  },
+  "mock_interviews": {
+    "min": 0.0,
+    "max": 10.0,
+    "mean": 2.97,
+    "median": 3.0
+  },
+  "communication_score": {
+    "min": 1.0,
+    "max": 10.0,
+    "mean": 6.026200000000001,
+    "median": 6.0
+  },
+  "resume_score": {
+    "min": 1.0,
+    "max": 9.9,
+    "mean": 4.6226,
+    "median": 4.6
+  },
+  "hackathons_participated": {
+    "min": 0.0,
+    "max": 6.0,
+    "mean": 1.585,
+    "median": 1.0
+  }
+}
