@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Placement Board — Student Placement Predictor</title>
+<meta name="description" content="A machine learning model that predicts campus placement odds, with the full analysis behind it — runs right in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="wrap">
+    <a href="#top" class="brand"><span class="sq"></span> Placement Board</a>
+    <div class="navlinks">
+      <a href="#analysis">Analysis</a>
+      <a href="#predict">Predict</a>
+      <a href="#method">Methodology</a>
+      <a href="https://github.com/" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div class="hero-copy">
+      <div class="eyebrow">Campus placement model</div>
+      <h1>Will this student get placed?</h1>
+      <p>
+        A gradient-boosted model trained on 1,000 students' study habits, DSA practice,
+        projects and interview prep — balanced with SMOTE to take the minority
+        "Not Placed" outcome seriously instead of just predicting the majority class.
+        Enter a student's profile below and the model runs the prediction
+        right here in your browser.
+      </p>
+      <div class="hero-actions">
+        <a href="#predict" class="btn btn-primary">Run a prediction</a>
+        <a href="#analysis" class="btn btn-ghost">See the analysis</a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="analysis">
+  <div class="wrap">
+    <div class="eyebrow">The data</div>
+    <h2>What actually separates placed from not-placed</h2>
+    <p>1,000 student records — CGPA, daily study hours, DSA practice, projects,
+      internships, mock interviews, communication and resume scores, and
+      hackathon participation — checked for what actually correlates with
+      getting placed, before any model was trained.</p>
+
+    <div class="chart-grid">
+      <div class="chart-card">
+        <img src="images/class_balance.png" alt="Bar chart of placement outcome counts: 714 placed, 286 not placed" loading="lazy">
+        <div class="cap">714 of 1,000 students were placed — a real class imbalance the model has to account for, which is why training uses SMOTE.</div>
+      </div>
+      <div class="chart-card">
+        <img src="images/cgpa_studyhours_box.png" alt="Box plots of CGPA and study hours split by placement outcome" loading="lazy">
+        <div class="cap">Placed students skew slightly higher on both CGPA and daily study hours, but the overlap is wide — neither one alone is a strong signal.</div>
+      </div>
+      <div class="chart-card full">
+        <img src="images/correlation_heatmap.png" alt="Correlation heatmap across all engineered features" loading="lazy">
+        <div class="cap">Correlation matrix across raw and engineered features. DSA hours and problems solved are tightly linked (as expected), which is why they're merged into a single dsa_overall_score.</div>
+      </div>
+      <div class="chart-card full">
+        <img src="images/feature_importance.png" alt="Horizontal bar chart of feature importances from the final XGBoost model" loading="lazy">
+        <div class="cap">Practical experience (projects + internships) and hackathon participation matter more to the model than raw CGPA.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="predict">
+  <div class="wrap">
+    <div class="eyebrow">Try it</div>
+    <h2>Score a student profile</h2>
+    <p>Move the sliders to describe a student. The model — exported to ONNX and
+      running entirely in your browser, no server involved — scores it instantly.</p>
+
+    <div class="predict-layout">
+      <form class="form-panel" id="predict-form">
+
+        <div class="field">
+          <label for="cgpa">CGPA <span class="val" id="cgpa-val">7.3</span></label>
+          <input type="range" id="cgpa" min="5" max="10" step="0.1" value="7.3">
+        </div>
+
+        <div class="field">
+          <label for="study_hours">Study hours / day <span class="val" id="study_hours-val">4.5</span></label>
+          <input type="range" id="study_hours" min="1" max="10" step="0.1" value="4.5">
+        </div>
+
+        <div class="field">
+          <label for="dsa_hours">DSA practice hours / week <span class="val" id="dsa_hours-val">6.2</span></label>
+          <input type="range" id="dsa_hours" min="0" max="15.6" step="0.1" value="6.2">
+        </div>
+
+        <div class="field">
+          <label for="dsa_problems">DSA problems solved <span class="val" id="dsa_problems-val">69</span></label>
+          <input type="range" id="dsa_problems" min="0" max="189" step="1" value="69">
+        </div>
+
+        <div class="field">
+          <label for="projects">Projects completed <span class="val" id="projects-val">2</span></label>
+          <input type="range" id="projects" min="0" max="6" step="1" value="2">
+        </div>
+
+        <div class="field">
+          <label>Internship experience</label>
+          <div class="toggle-row" id="internship-toggle">
+            <button type="button" data-val="0" class="active">None</button>
+            <button type="button" data-val="1">Has interned</button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="mock">Mock interviews attended <span class="val" id="mock-val">3</span></label>
+          <input type="range" id="mock" min="0" max="10" step="1" value="3">
+        </div>
+
+        <div class="field">
+          <label for="comm">Communication score <span class="val" id="comm-val">6.0</span></label>
+          <input type="range" id="comm" min="1" max="10" step="0.1" value="6.0">
+        </div>
+
+        <div class="field">
+          <label for="resume">Resume score <span class="val" id="resume-val">4.6</span></label>
+          <input type="range" id="resume" min="1" max="9.9" step="0.1" value="4.6">
+        </div>
+
+        <div class="field">
+          <label for="hackathons">Hackathons participated <span class="val" id="hackathons-val">2</span></label>
+          <input type="range" id="hackathons" min="0" max="6" step="1" value="2">
+        </div>
+
+      </form>
+
+      <div class="result-panel">
+        <div id="result-empty" class="result-empty">Loading model…</div>
+        <div id="result-body" style="display:none">
+          <div class="result-verdict">
+            <span class="label" id="verdict-label">—</span>
+            <span class="pct" id="verdict-pct">—</span>
+          </div>
+          <div class="result-bar">
+            <div class="fill" id="result-fill" style="width:0%"></div>
+            <div class="rest" style="flex:1"></div>
+          </div>
+          <h3>Strongest drivers for this profile</h3>
+          <ul class="driver-list" id="driver-list"></ul>
+          <div class="note-box">
+            This is a probability estimate from a machine learning model, not
+            a guarantee — treat it as a signal to explore, not a verdict.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="method">
+  <div class="wrap">
+    <div class="eyebrow">Under the hood</div>
+    <h2>How this was built</h2>
+    <div class="method-grid">
+      <div class="method-card">
+        <h3>Feature engineering</h3>
+        <p>Three engineered features drive most of the signal: <span class="mono">academic_efficiency</span>
+          (CGPA × study hours), <span class="mono">practical_experience</span>
+          (projects + 2× internships), and <span class="mono">dsa_overall_score</span>
+          (DSA hours × problems solved ÷ 100), which replaces two collinear raw columns.</p>
+      </div>
+      <div class="method-card">
+        <h3>Balancing &amp; model</h3>
+        <p>Features are standardized, then SMOTE oversamples the minority
+          "Not Placed" class in the training split only. The final estimator
+          is an XGBoost classifier (400 trees, depth 5, learning rate 0.03) tuned
+          for this balanced training set.</p>
+      </div>
+      <div class="method-card">
+        <h3>Running in your browser</h3>
+        <p>The trained model is exported to ONNX and loaded with onnxruntime-web.
+          There's no backend: every prediction on this page runs locally on your
+          device, using the exact scaler and feature order from training.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Built from a student placement analysis notebook · model runs entirely client-side · no data leaves your browser
+  </div>
+</footer>
+
+<script src="assets/js/ort/ort.min.js"></script>
+<script src="assets/js/predict.js"></script>
+</body>
+</html>
